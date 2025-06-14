@@ -23,6 +23,14 @@ internal class TestFacade
         currentGame.Roll(10 - firstRollPins);
     }
 
+    internal void FinishFrames(int frameCount)
+    {
+        while (currentGame.Frames.Where(IsFinished).Count() < frameCount)
+        {
+            currentGame.Roll(0);
+        }
+    }
+
 
     internal async Task AssertFrameHasFirstRollPinsKnockedDown(int frame, int pins) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
@@ -55,5 +63,7 @@ internal class TestFacade
     internal async Task AssertFrameScore(int frame, int score) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().Score)
         .IsEqualTo(score);
+
+    private bool IsFinished (IBowlingFrame frame) => frame.FirstRoll.HasValue && frame.SecondRoll.HasValue || frame.FirstRoll == 10;
 
 }

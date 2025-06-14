@@ -37,6 +37,8 @@ public class BowlingGame : IBowlingGame
 
     internal record Frame : IBowlingFrame
     {
+        public bool IsStrike => FirstRoll.HasValue && FirstRoll == 10;
+        public bool IsSpare => FirstRoll.HasValue && SecondRoll.HasValue && (FirstRoll + SecondRoll == 10);
         public int? FirstRoll { get; set; }
         public int? SecondRoll { get; set; }
 
@@ -51,20 +53,19 @@ public class BowlingGame : IBowlingGame
 
                 var score = FirstRoll + SecondRoll.GetValueOrDefault();
 
-                if (FirstRoll == 10) // Strike
+                if (IsStrike)
                 {
                     score += TrailingFrame?.FirstRoll.GetValueOrDefault() + TrailingFrame?.SecondRoll.GetValueOrDefault();
 
-                    if (TrailingFrame?.FirstRoll == 10) // If the next frame is also a strike, add its first roll again
+                    if (TrailingFrame?.IsStrike is true)
                     {
                         score += TrailingFrame.TrailingFrame?.FirstRoll.GetValueOrDefault();
                     }
                 }
-                else if (score == 10) // Spare
+                else if (IsSpare)
                 {
                     score += TrailingFrame?.FirstRoll;
                 }
-
 
                 return score;
             }
