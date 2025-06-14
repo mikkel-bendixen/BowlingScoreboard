@@ -154,6 +154,6 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertTotalFrameScore(2, 16);
+        await testFacade.AssertTotalFrameScore(1, 16);
     }
 }
