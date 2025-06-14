@@ -53,7 +53,12 @@ public class BowlingGame : IBowlingGame
 
                 if (FirstRoll == 10) // Strike
                 {
-                    score += TrailingFrame?.Score;
+                    score += TrailingFrame?.FirstRoll.GetValueOrDefault() + TrailingFrame?.SecondRoll.GetValueOrDefault();
+
+                    if (TrailingFrame?.FirstRoll == 10) // If the next frame is also a strike, add its first roll again
+                    {
+                        score += TrailingFrame.TrailingFrame?.FirstRoll.GetValueOrDefault();
+                    }
                 }
                 else if (score == 10) // Spare
                 {

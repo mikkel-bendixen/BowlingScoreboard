@@ -28,6 +28,13 @@ namespace Application.Test;
 // GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenSecondFrameScoreIsFourteen
 // GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenThirdFrameScoreIsFour
 
+// GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenFirstFrameScoreIsThirty
+// GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenSecondFrameScoreIsTwentySix
+// GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenThirdFrameScoreIsSixteen
+// GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenFourthFrameScoreIsSix
+
+
+
 
 
 // GivenPlayerRolledSixPinsOnFirstRollInFirstFrame_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
@@ -328,6 +335,68 @@ internal class BowlingGameTests
 
         // Then
         await testFacade.AssertFrameScore(3, 4);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenFirstFrameScoreIsThirty()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(6);
+
+        // Then
+        await testFacade.AssertFrameScore(1, 30);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenSecondFrameScoreIsTwentySix()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(6);
+
+        // Then
+        await testFacade.AssertFrameScore(2, 26);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenThirdFrameScoreIsSixteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        // When
+        testFacade.Roll(6);
+        // Then
+        await testFacade.AssertFrameScore(3, 16);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledThreeStrikersOnFirstThreeFrames_WhenRollingSixPins_ThenFourthFrameScoreIsSix()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(6);
+
+        // Then
+        await testFacade.AssertFrameScore(4, 6);
     }
 
 }
