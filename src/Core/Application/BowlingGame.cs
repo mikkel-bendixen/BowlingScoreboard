@@ -30,6 +30,8 @@ public class BowlingGame : IBowlingGame
         else if (currentFrame.SecondRoll is null)
         {
             currentFrame.SecondRoll = pins;
+            currentFrameIndex++;
+            currentFrame.TrailingFrame = frames[currentFrameIndex];
         }
     }
 
@@ -49,10 +51,15 @@ public class BowlingGame : IBowlingGame
 
                 var score = FirstRoll + SecondRoll.GetValueOrDefault();
 
-                if (FirstRoll == 10)
+                if (FirstRoll == 10) // Strike
                 {
                     score += TrailingFrame?.Score;
                 }
+                else if (score == 10) // Spare
+                {
+                    score += TrailingFrame?.FirstRoll;
+                }
+
 
                 return score;
             }
