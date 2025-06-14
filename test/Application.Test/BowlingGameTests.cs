@@ -83,4 +83,18 @@ internal class BowlingGameTests
         // Then
         await testFacade.AssertTotalScore(5);
     }
+
+    [Test]
+    public async Task GivenPlayerRolledStrikeOnFirstFrame_WhenRollingTwoPins_ThenThereIsNoSecondRollInFirstFrame()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(10);
+
+        // When
+        testFacade.Roll(2);
+
+        // Then
+        await testFacade.AssertNoSecondRollInFrame(1);
+    }
 }

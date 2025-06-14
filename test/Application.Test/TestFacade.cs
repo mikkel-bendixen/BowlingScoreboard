@@ -24,6 +24,14 @@ internal class TestFacade
         .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
         .IsEqualTo(pins);
 
+    internal async Task AssertNoFirstRollInFrame(int frame) => await Assert
+        .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
+        .IsNull();
+
+    internal async Task AssertNoSecondRollInFrame(int frame) => await Assert
+        .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
+        .IsNull();
+
     internal async Task AssertTotalScore(int score) => await Assert
         .That(currentGame.Score)
         .IsEqualTo(score);
