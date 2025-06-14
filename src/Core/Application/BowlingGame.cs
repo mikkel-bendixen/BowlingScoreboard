@@ -11,15 +11,11 @@ public class BowlingGame : IBowlingGame
         .Where(roll => roll.HasValue)
         .Sum(roll => roll.Value);
 
-    private Frame[] frames = new Frame[10]
-    {
+    private Frame[] frames =
+    [
         new Frame(), new Frame(), new Frame(), new Frame(), new Frame(),
         new Frame(), new Frame(), new Frame(), new Frame(), new Frame()
-    };
-    public BowlingGame()
-    {
-        //currentFrame = new Frame();
-    }
+    ];
 
     public void Roll(int pins)
     {
@@ -27,6 +23,10 @@ public class BowlingGame : IBowlingGame
         if (currentFrame.FirstRoll is null)
         {
             currentFrame.FirstRoll = pins;
+            if (pins == 10) // Strike
+            {
+                currentFrameIndex++;
+            }
 
         }
         else if (currentFrame.SecondRoll is null)
