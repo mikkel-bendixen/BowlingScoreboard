@@ -11,8 +11,8 @@ namespace Application.Test;
 // GivenPlayerRolledStrikeOnFirstFrame_WhenRollingTwoPins_ThenFirstRollInSecondFrameIsTwo
 
 // GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenSecondRollInSecondFrameIsFour
-// GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenFirstFrameScoreIsSixteen
 // GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenSecondFrameScoreIsSix
+// GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenFirstFrameScoreIsSixteen
 // GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenTotalScoreIsTwentyTwo
 
 
@@ -96,5 +96,64 @@ internal class BowlingGameTests
 
         // Then
         await testFacade.AssertNoSecondRollInFrame(1);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledStrikeOnFirstFrame_WhenRollingTwoPins_ThenFirstRollInSecondFrameIsTwo()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(10);
+
+        // When
+        testFacade.Roll(2);
+
+        // Then
+        await testFacade.AssertKnockedPinsOnFirstRollInFrame(2, 2);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenSecondRollInSecondFrameIsFour()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(10);
+        testFacade.Roll(2);
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertKnockedPinsOnSecondRollInFrame(4, 2);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenSecondFrameScoreIsSix()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(10);
+        testFacade.Roll(2);
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertTotalFrameScore(2, 6);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenFirstFrameScoreIsSixteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(10);
+        testFacade.Roll(2);
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertTotalFrameScore(2, 16);
     }
 }

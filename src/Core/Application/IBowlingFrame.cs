@@ -4,4 +4,5 @@ public interface IBowlingFrame
 {
     public int? FirstRoll { get; set; }
     public int? SecondRoll { get; set; }
+    public int? Score { get; }
 }

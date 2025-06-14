@@ -39,5 +39,15 @@ public class BowlingGame : IBowlingGame
     {
         public int? FirstRoll { get; set; }
         public int? SecondRoll { get; set; }
+
+        public int? Score
+        {
+            get
+            {
+                var score = FirstRoll + SecondRoll;
+
+                return score;
+            }
+        }
     }
 }
