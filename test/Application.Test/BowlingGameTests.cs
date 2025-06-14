@@ -24,6 +24,9 @@ namespace Application.Test;
 // GivenPlayerRolledSpareOnFirstFrameStrikeOnSecondFrame_WhenRollingFivePins_ThenFirstFrameScoreIsTwenty
 // GivenPlayerRolledSpareOnFirstFrame_WhenRollingZeroPins_ThenFirstFrameScoreIsTen
 
+// GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenFirstFrameScoreIsTwentyFour
+// GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenSecondFrameScoreIsFourteen
+// GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenThirdFrameScoreIsFour
 
 
 
@@ -281,5 +284,50 @@ internal class BowlingGameTests
         await testFacade.AssertFrameScore(1, 10);
     }
 
+    [Test]
+    public async Task GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenFirstFrameScoreIsTwentyFour()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertFrameScore(1, 24);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenSecondFrameScoreIsFourteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertFrameScore(2, 14);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledTwoStrikersOnFirstTwoFrames_WhenRollingFourPins_ThenThirdFrameScoreIsFour()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.Roll(4);
+
+        // When
+        testFacade.Roll(0);
+
+        // Then
+        await testFacade.AssertFrameScore(3, 4);
+    }
 
 }
