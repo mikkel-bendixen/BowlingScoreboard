@@ -19,4 +19,8 @@ internal class TestFacade
     internal async Task AssertKnockedPinsOnFirstRollInFrame(int pins, int frame) =>  await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
         .IsEqualTo(pins);
+
+    internal async Task AssertKnockedPinsOnSecondRollInFrame(int pins, int frame) => await Assert
+        .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
+        .IsEqualTo(pins);
 }
