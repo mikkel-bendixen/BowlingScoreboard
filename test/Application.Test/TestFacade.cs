@@ -37,7 +37,7 @@ internal class TestFacade
         .IsEqualTo(score);
 
     internal async Task AssertTotalFrameScore(int frame, int score) => await Assert
-        .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll + currentGame.Frames.Skip(frame - 1).First().SecondRoll)
+        .That(currentGame.Frames.Skip(frame - 1).First().Score)
         .IsEqualTo(score);
 
 }

@@ -6,10 +6,7 @@ public class BowlingGame : IBowlingGame
     private int currentFrameIndex = 0;
     public IReadOnlyCollection<IBowlingFrame> Frames => frames;
 
-    public int Score => frames
-        .SelectMany(frame => new[] { frame.FirstRoll, frame.SecondRoll })
-        .Where(roll => roll.HasValue)
-        .Sum(roll => roll.Value);
+    public int Score => frames.Sum(frame => frame.Score ?? 0);
 
     private Frame[] frames =
     [
@@ -26,6 +23,7 @@ public class BowlingGame : IBowlingGame
             if (pins == 10) // Strike
             {
                 currentFrameIndex++;
+                currentFrame.TrailingFrame = frames[currentFrameIndex];
             }
 
         }
@@ -44,10 +42,21 @@ public class BowlingGame : IBowlingGame
         {
             get
             {
-                var score = FirstRoll + SecondRoll;
+                if (!FirstRoll.HasValue)
+                {
+                    return null;
+                }
+
+                var score = FirstRoll + SecondRoll.GetValueOrDefault();
+
+                if (FirstRoll == 10)
+                {
+                    score += TrailingFrame?.Score;
+                }
 
                 return score;
             }
         }
+        public Frame? TrailingFrame { get; set; } // For strike handling
     }
 }
