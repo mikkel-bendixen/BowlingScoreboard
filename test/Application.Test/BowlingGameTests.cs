@@ -49,7 +49,7 @@ internal class BowlingGameTests
         testFacade.Roll(1);
 
         // Then
-        await testFacade.AssertKnockedPinsOnFirstRollInFrame(1, 1);
+        await testFacade.AssertFrameHasFirstRollPinsKnockedDown(1, 1);
     }
 
     [Test]
@@ -62,7 +62,7 @@ internal class BowlingGameTests
         testFacade.Roll(2);
 
         // Then
-        await testFacade.AssertKnockedPinsOnFirstRollInFrame(2, 1);
+        await testFacade.AssertFrameHasFirstRollPinsKnockedDown(1, 2);
     }
 
     [Test]
@@ -76,7 +76,7 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertKnockedPinsOnSecondRollInFrame(4, 1);
+        await testFacade.AssertFrameHasSecondRollPinsKnockedDown(1, 4);
     }
 
     [Test]
@@ -118,7 +118,7 @@ internal class BowlingGameTests
         testFacade.Roll(2);
 
         // Then
-        await testFacade.AssertKnockedPinsOnFirstRollInFrame(2, 2);
+        await testFacade.AssertFrameHasFirstRollPinsKnockedDown(2, 2);
     }
 
     [Test]
@@ -133,7 +133,7 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertKnockedPinsOnSecondRollInFrame(4, 2);
+        await testFacade.AssertFrameHasSecondRollPinsKnockedDown(2, 4);
     }
 
     [Test]
@@ -148,7 +148,7 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertTotalFrameScore(2, 6);
+        await testFacade.AssertFrameScore(2, 6);
     }
 
     [Test]
@@ -163,7 +163,7 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertTotalFrameScore(1, 16);
+        await testFacade.AssertFrameScore(1, 16);
     }
 
     [Test]
@@ -190,7 +190,7 @@ internal class BowlingGameTests
         testFacade.Roll(5);
 
         // Then
-        await testFacade.AssertTotalFrameScore(1, 15);
+        await testFacade.AssertFrameScore(1, 15);
     }
 
     [Test]
@@ -205,7 +205,7 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertTotalFrameScore(2, 9);
+        await testFacade.AssertFrameScore(2, 9);
     }
 
     [Test]
@@ -220,7 +220,7 @@ internal class BowlingGameTests
         testFacade.Roll(4);
 
         // Then
-        await testFacade.AssertTotalFrameScore(2, 9);
+        await testFacade.AssertFrameScore(2, 9);
     }
 
     [Test]
@@ -249,7 +249,7 @@ internal class BowlingGameTests
         testFacade.RollStrike();
 
         // Then
-        await testFacade.AssertTotalFrameScore(1, 20);
+        await testFacade.AssertFrameScore(1, 20);
     }
 
     [Test]
@@ -264,7 +264,7 @@ internal class BowlingGameTests
         testFacade.Roll(5);
 
         // Then
-        await testFacade.AssertTotalFrameScore(1, 20);
+        await testFacade.AssertFrameScore(1, 20);
     }
 
     [Test]
@@ -278,7 +278,7 @@ internal class BowlingGameTests
         testFacade.Roll(0);
 
         // Then
-        await testFacade.AssertTotalFrameScore(1, 10);
+        await testFacade.AssertFrameScore(1, 10);
     }
 
 

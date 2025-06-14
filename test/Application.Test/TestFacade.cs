@@ -23,13 +23,22 @@ internal class TestFacade
         currentGame.Roll(10 - firstRollPins);
     }
 
-    internal async Task AssertKnockedPinsOnFirstRollInFrame(int pins, int frame) => await Assert
+
+    internal async Task AssertFrameHasFirstRollPinsKnockedDown(int frame, int pins) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
         .IsEqualTo(pins);
 
-    internal async Task AssertKnockedPinsOnSecondRollInFrame(int pins, int frame) => await Assert
+    internal async Task AssertFrameHasSecondRollPinsKnockedDown(int frame, int pins) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
         .IsEqualTo(pins);
+
+    //internal async Task AssertKnockedPinsOnFirstRollInFrame(int pins, int frame) => await Assert
+    //    .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
+    //    .IsEqualTo(pins);
+
+    //internal async Task AssertKnockedPinsOnSecondRollInFrame(int pins, int frame) => await Assert
+    //    .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
+    //    .IsEqualTo(pins);
 
     internal async Task AssertNoFirstRollInFrame(int frame) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
@@ -43,7 +52,7 @@ internal class TestFacade
         .That(currentGame.Score)
         .IsEqualTo(score);
 
-    internal async Task AssertTotalFrameScore(int frame, int score) => await Assert
+    internal async Task AssertFrameScore(int frame, int score) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().Score)
         .IsEqualTo(score);
 
