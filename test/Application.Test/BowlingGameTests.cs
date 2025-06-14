@@ -69,4 +69,18 @@ internal class BowlingGameTests
         // Then
         await testFacade.AssertKnockedPinsOnSecondRollInFrame(4, 1);
     }
+
+    [Test]
+    public async Task GivenPlayerRolledOnePinOnFirstRollInFirstFrame_WhenRollingFourPins_ThenTotalScoreIsFive()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(1);
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertTotalScore(5);
+    }
 }
