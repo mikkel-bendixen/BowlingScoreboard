@@ -18,7 +18,16 @@ public class BowlingGame : IBowlingGame
 
     public void Roll(int pins)
     {
+        var currentFrame = frames[currentFrameIndex];
+        if (currentFrame.FirstRoll is null)
+        {
+            currentFrame.FirstRoll = pins;
 
+        }
+        else if (currentFrame.SecondRoll is null)
+        {
+            currentFrame.SecondRoll = pins;
+        }
     }
 
     internal record Frame : IBowlingFrame
