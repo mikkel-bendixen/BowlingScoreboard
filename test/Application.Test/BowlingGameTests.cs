@@ -97,7 +97,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(10);
+        testFacade.RollStrike();
 
         // When
         testFacade.Roll(2);
@@ -111,7 +111,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(10);
+        testFacade.RollStrike();
 
         // When
         testFacade.Roll(2);
@@ -125,7 +125,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(10);
+        testFacade.RollStrike();
         testFacade.Roll(2);
 
         // When
@@ -140,7 +140,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(10);
+        testFacade.RollStrike();
         testFacade.Roll(2);
 
         // When
@@ -155,7 +155,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(10);
+        testFacade.RollStrike();
         testFacade.Roll(2);
 
         // When
@@ -170,7 +170,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(10);
+        testFacade.RollStrike();
         testFacade.Roll(2);
         // When
         testFacade.Roll(4);
@@ -183,8 +183,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(7);
-        testFacade.Roll(3); // Spare
+        testFacade.RollSpare();
 
         // When
         testFacade.Roll(5);
@@ -198,8 +197,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(7);
-        testFacade.Roll(3);
+        testFacade.RollSpare();
         testFacade.Roll(5);
 
         // When
@@ -214,8 +212,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(7);
-        testFacade.Roll(3);
+        testFacade.RollSpare();
         testFacade.Roll(5);
 
         // When
@@ -230,8 +227,7 @@ internal class BowlingGameTests
     {
         // Given
         testFacade.StartNewGame();
-        testFacade.Roll(7);
-        testFacade.Roll(3);
+        testFacade.RollSpare();
         testFacade.Roll(5);
 
         // When

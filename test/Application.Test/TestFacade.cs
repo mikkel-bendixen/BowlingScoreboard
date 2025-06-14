@@ -15,6 +15,13 @@ internal class TestFacade
         currentGame = new BowlingGame();
     }
     internal void Roll(int pins) => currentGame.Roll(pins);
+    internal void RollStrike() => currentGame.Roll(10);
+
+    internal void RollSpare(int firstRollPins = 7)
+    {
+        currentGame.Roll(firstRollPins);
+        currentGame.Roll(10 - firstRollPins);
+    }
 
     internal async Task AssertKnockedPinsOnFirstRollInFrame(int pins, int frame) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
