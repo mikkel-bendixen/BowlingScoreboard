@@ -15,10 +15,18 @@ namespace Application.Test;
 // GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenFirstFrameScoreIsSixteen
 // GivenPlayerRolledStrikeOnFirstFrameAndTwoPinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenTotalScoreIsTwentyTwo
 
+// GivenPlayerRolledSpareOnFirstFrame_WhenRollingFivePins_ThenFirstFrameScoreIsFifteen
+// GivenPlayerRolledSpareOnFirstFrameAndFivePinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenSecondFrameScoreIsNine
+// GivenPlayerRolledSpareOnFirstFrameAndFivePinsOnFirstRollInSecondFrame_WhenRollingFourPins_ThenFirstFrameScoreIsFifteen
 
 
 
 
+
+
+
+
+// GivenPlayerRolledSixPinsOnFirstRollInFirstFrame_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
 
 internal class BowlingGameTests
 {
@@ -168,5 +176,20 @@ internal class BowlingGameTests
         testFacade.Roll(4);
         // Then
         await testFacade.AssertTotalScore(22);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledSpareOnFirstFrame_WhenRollingFivePins_ThenFirstFrameScoreIsFifteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(7);
+        testFacade.Roll(3); // Spare
+
+        // When
+        testFacade.Roll(5);
+
+        // Then
+        await testFacade.AssertTotalFrameScore(1, 15);
     }
 }
