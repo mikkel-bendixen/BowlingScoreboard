@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Test;
+
+internal class TestFacade
+{
+    private IBowlingGame currentGame;
+
+    internal void StartNewGame()
+    {
+        currentGame = new BowlingGame();
+    }
+    internal void Roll(int pins) => currentGame.Roll(pins);
+
+    internal async Task AssertKnockedPinsOnFirstRollInFrame(int pins, int frame) =>  await Assert
+        .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
+        .IsEqualTo(pins);
+}

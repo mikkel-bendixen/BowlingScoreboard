@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Application.Test;
 
 // GivenANewBowlingGame_WhenRollingOnePin_ThenFirstRollInFirstFrameIsOne
@@ -27,5 +22,24 @@ namespace Application.Test;
 
 internal class BowlingGameTests
 {
+    private TestFacade testFacade;
 
+    [Before(HookType.Test)]
+    public void Setup()
+    {
+        testFacade = new TestFacade();
+    }
+
+    [Test]
+    public async Task GivenANewBowlingGame_WhenRollingOnePin_ThenFirstRollInFirstFrameIsOne()
+    {
+        // Given
+        testFacade.StartNewGame();
+
+        // When
+        testFacade.Roll(1);
+
+        // Then
+        await testFacade.AssertKnockedPinsOnFirstRollInFrame(1, 1);
+    }
 }
