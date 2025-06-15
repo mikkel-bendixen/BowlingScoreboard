@@ -1,0 +1,69 @@
+﻿@page "/Bowling"
+
+@using Application
+@using Application.BowlingGameChain
+
+<PageTitle>Bowling</PageTitle>
+
+<h1>Bowling</h1>
+
+<FluentStack Orientation="Orientation.Horizontal" HorizontalGap="100">
+    <FluentStack Orientation="Orientation.Vertical" HorizontalGap="10">
+        <FluentButton Appearance="Appearance.Accent" @onclick="OnNewGame">New Game</FluentButton>
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentNumberField @bind-Value="pins" Label="Pins" />
+            <FluentButton Appearance="Appearance.Accent" @onclick="OnRoll">Roll</FluentButton>
+        </FluentStack>
+    </FluentStack>
+    <FluentStack Orientation="Orientation.Vertical" HorizontalGap="10">
+        <FluentLabel Typo="Typography.H3">@ScoreText</FluentLabel>
+        <FluentDataGrid Items="Frames">
+            <PropertyColumn Property="@(f => (Frames.ToList().IndexOf(f) + 1))" Title="Frame" Width="100px" />
+            <PropertyColumn Property="@(f => f.FirstRoll)" Title="1. Roll" Width="100px" />
+            <PropertyColumn Property="@(f => f.SecondRoll)" Title="2. Roll" Width="100px" />
+            <PropertyColumn Property="@(f => f.Score)" Title="Score" Width="100px" />
+        </FluentDataGrid>
+    </FluentStack>
+</FluentStack>
+
+
+<div>
+    <FluentDialog @ref="errorDialog" @ondialogdismiss=OnDismiss @bind-Hidden="@dialogHidden">
+        <FluentDialogHeader Visible="false" />
+        <h2>Error</h2>
+        <p>@errorMessage</p>
+        <FluentButton Appearance="Appearance.Accent" Autofocus="true" @onclick="OnClose">Close dialog</FluentButton>
+    </FluentDialog>
+</div>
+
+@code {
+    IBowlingGame currentGame = new BowlingGameClient();
+
+    private IQueryable<IBowlingFrame> Frames => currentGame?.Frames?.AsQueryable() ?? Enumerable.Empty<IBowlingFrame>().AsQueryable();
+
+    private string ScoreText => $"Score: {currentGame?.Score ?? 0}";
+    private int pins = 0; 
+
+    private void OnNewGame() => currentGame = new BowlingGameClient();
+
+    private void OnRoll()
+    {
+        try
+        {
+            currentGame.Roll(pins);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            errorDialog!.Show();
+        }
+    }
+
+    private FluentDialog? errorDialog;
+    private string errorMessage = string.Empty;
+    private bool dialogHidden { get; set; } = true;
+
+    private void OnClose() => errorDialog?.Hide();
+    private void OnDismiss(DialogEventArgs args) => errorDialog?.Hide();
+
+}
