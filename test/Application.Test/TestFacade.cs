@@ -12,7 +12,8 @@ internal class TestFacade
 
     internal void StartNewGame()
     {
-        currentGame = new BowlingGame();
+        //currentGame = new BowlingGame();
+        currentGame = new BowlingGameChain();
     }
     internal void Roll(int pins) => currentGame.Roll(pins);
     internal void RollStrike() => currentGame.Roll(10);
