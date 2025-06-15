@@ -43,6 +43,11 @@ namespace Application.Test;
 // GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPins_WhenRollingSixPins_ThenTenthFrameScoreIsTwenty
 // GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPinsAndFourPinsAgain_WhenRollingSixPins_ThenGameOverExceptionIsThrown
 
+// GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrame_WhenRollingFourPins_ThenTenthFrameScoreIsFourteen
+// GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrameAndThenRolledFourPins_WhenRollingFourPins_ThenGameOverExceptionIsThrown
+// GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrame_WhenRollingAStrike_ThenTenthFrameScoreIsTwenty
+// GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrameAndThenRolledAStrike_WhenRollingFourPins_ThenGameOverExceptionIsThrown
+
 
 // GivenPlayerHasPlayedTenFrames_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
 // GivenPlayerRolledSixPinsOnFirstRollInFirstFrame_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
@@ -525,6 +530,64 @@ internal class BowlingGameTests
         // When
         var exception = Assert.Throws<Exception>(() => testFacade.Roll(6));
 
+        // Then
+        await Assert.That(exception.Message).Contains("Game Over");
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrame_WhenRollingFourPins_ThenTenthFrameScoreIsFourteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollSpare();
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertFrameScore(10, 14);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrameAndThenRolledFourPins_WhenRollingFourPins_ThenGameOverExceptionIsThrown()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollSpare();
+        testFacade.Roll(4);
+
+        // When
+        var exception = Assert.Throws<Exception>(() => testFacade.Roll(4));
+
+        // Then
+        await Assert.That(exception.Message).Contains("Game Over");
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrame_WhenRollingAStrike_ThenTenthFrameScoreIsTwenty()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollSpare();
+        // When
+        testFacade.RollStrike();
+        // Then
+        await testFacade.AssertFrameScore(10, 20);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrameAndThenRolledAStrike_WhenRollingFourPins_ThenGameOverExceptionIsThrown()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollSpare();
+        testFacade.RollStrike();
+        // When
+        var exception = Assert.Throws<Exception>(() => testFacade.Roll(4));
         // Then
         await Assert.That(exception.Message).Contains("Game Over");
     }
