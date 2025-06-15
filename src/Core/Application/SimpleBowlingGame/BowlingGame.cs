@@ -1,17 +1,16 @@
-﻿
-namespace Application;
+﻿namespace Application.SimpleBowlingGame;
 
 public class BowlingGame : IBowlingGame
 {
-    private Frame? currentFrame;
+    private SimpleFrame? currentFrame;
     public IReadOnlyCollection<IBowlingFrame> Frames => frames;
 
     public int Score => frames.Sum(frame => frame.Score ?? 0);
 
-    private Frame[] frames =
+    private SimpleFrame[] frames =
     [
-        new Frame(), new Frame(), new Frame(), new Frame(), new Frame(),
-        new Frame(), new Frame(), new Frame(), new Frame(), new Frame()
+        new SimpleFrame(), new SimpleFrame(), new SimpleFrame(), new SimpleFrame(), new SimpleFrame(),
+        new SimpleFrame(), new SimpleFrame(), new SimpleFrame(), new SimpleFrame(), new SimpleFrame()
     ];
 
     public BowlingGame()
@@ -50,7 +49,7 @@ public class BowlingGame : IBowlingGame
             if(currentFrame.IsStrike || currentFrame.IsSpare)
             {
                 // Allow for bonus rolls in the last frame
-                var supportFrame = new Frame();
+                var supportFrame = new SimpleFrame();
                 currentFrame.TrailingFrame = supportFrame;
                 currentFrame = supportFrame;
             }
@@ -75,40 +74,5 @@ public class BowlingGame : IBowlingGame
 
 
 
-    internal record Frame : IBowlingFrame
-    {
-        public bool IsStrike => FirstRoll.HasValue && FirstRoll == 10;
-        public bool IsSpare => FirstRoll.HasValue && SecondRoll.HasValue && (FirstRoll + SecondRoll == 10);
-        public int? FirstRoll { get; set; }
-        public int? SecondRoll { get; set; }
-        public int? Score
-        {
-            get
-            {
-                if (!FirstRoll.HasValue)
-                {
-                    return null;
-                }
-
-                var score = FirstRoll + SecondRoll.GetValueOrDefault();
-
-                if (IsStrike)
-                {
-                    score += TrailingFrame?.FirstRoll.GetValueOrDefault() + TrailingFrame?.SecondRoll.GetValueOrDefault();
-
-                    if (TrailingFrame?.IsStrike is true)
-                    {
-                        score += TrailingFrame.TrailingFrame?.FirstRoll.GetValueOrDefault();
-                    }
-                }
-                else if (IsSpare)
-                {
-                    score += TrailingFrame?.FirstRoll;
-                }
-
-                return score;
-            }
-        }
-        public Frame? TrailingFrame { get; set; } // For strike handling
-    }
+    
 }

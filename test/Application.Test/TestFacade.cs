@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.BowlingGameChain;
 
 namespace Application.Test;
 
@@ -12,8 +8,7 @@ internal class TestFacade
 
     internal void StartNewGame()
     {
-        //currentGame = new BowlingGame();
-        currentGame = new BowlingGameChain();
+        currentGame = new BowlingGameClient();
     }
     internal void Roll(int pins) => currentGame.Roll(pins);
     internal void RollStrike() => currentGame.Roll(10);
@@ -40,7 +35,6 @@ internal class TestFacade
         }
     }
 
-
     internal async Task AssertFrameHasFirstRollPinsKnockedDown(int frame, int pins) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
         .IsEqualTo(pins);
@@ -48,14 +42,6 @@ internal class TestFacade
     internal async Task AssertFrameHasSecondRollPinsKnockedDown(int frame, int pins) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
         .IsEqualTo(pins);
-
-    //internal async Task AssertKnockedPinsOnFirstRollInFrame(int pins, int frame) => await Assert
-    //    .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
-    //    .IsEqualTo(pins);
-
-    //internal async Task AssertKnockedPinsOnSecondRollInFrame(int pins, int frame) => await Assert
-    //    .That(currentGame.Frames.Skip(frame - 1).First().SecondRoll)
-    //    .IsEqualTo(pins);
 
     internal async Task AssertNoFirstRollInFrame(int frame) => await Assert
         .That(currentGame.Frames.Skip(frame - 1).First().FirstRoll)
