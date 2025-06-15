@@ -24,6 +24,14 @@ internal class TestFacade
         currentGame.Roll(10 - firstRollPins);
     }
 
+    internal void RollMany(params int[] pinsPerRoll)
+    {
+        foreach (var pins in pinsPerRoll)
+        {
+            currentGame.Roll(pins);
+        }
+    }
+
     internal void FinishFrames(int frameCount)
     {
         while (currentGame.Frames.Where(IsFinished).Count() < frameCount)

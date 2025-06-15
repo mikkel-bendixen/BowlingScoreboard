@@ -48,8 +48,16 @@ namespace Application.Test;
 // GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrame_WhenRollingAStrike_ThenTenthFrameScoreIsTwenty
 // GivenPlayerHasPlayedNineFramesAndRolledASpareInTenthFrameAndThenRolledAStrike_WhenRollingFourPins_ThenGameOverExceptionIsThrown
 
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrame_WhenRollingAStrike_ThenTenthFrameScoreIsTwenty
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrameAndThenRolledAStrike_WhenRollingSevenPins_ThenTenthFrameScoreIsTwentySeven
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrameAndThenRolledAStrikeAndThenSevenPins_WhenRollingSevenPins_ThenGameOverExceptionIsThrown
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrameAndThenRolledAStrike_WhenRollingAStrike_ThenTenthFrameScoreIsThirty
+// GivenPlayerHasPlayedNineFramesAndRolledThreeStrikesInTenthFrame_WhenRollingSevenPins_ThenGameOverExceptionIsThrown
 
-// GivenPlayerHasPlayedTenFrames_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
+// GivenPlayerHasABadDay_WhenRollingGutterGame_ThenTotalScoreIsZero
+// GivenPlayerHasANiceDay_WhenRollingPerfectGame_ThenTotalScoreIsThreeHundred
+// GivenANewBowlingGame_WhenPlayingWholeExampleGame_ThenTotalScoreIsRight
+
 // GivenPlayerRolledSixPinsOnFirstRollInFirstFrame_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
 
 internal class BowlingGameTests
@@ -590,6 +598,142 @@ internal class BowlingGameTests
         var exception = Assert.Throws<Exception>(() => testFacade.Roll(4));
         // Then
         await Assert.That(exception.Message).Contains("Game Over");
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrame_WhenRollingAStrike_ThenTenthFrameScoreIsTwenty()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+
+        // When
+        testFacade.RollStrike();
+
+        // Then
+        await testFacade.AssertFrameScore(10, 20);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrameAndThenRolledAStrike_WhenRollingSevenPins_ThenTenthFrameScoreIsTwentySeven()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(7);
+
+        // Then
+        await testFacade.AssertFrameScore(10, 27);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrameAndThenRolledAStrikeAndThenSevenPins_WhenRollingSevenPins_ThenGameOverExceptionIsThrown()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.Roll(7);
+
+        // When
+        var exception = Assert.Throws<Exception>(() => testFacade.Roll(7));
+
+        // Then
+        await Assert.That(exception.Message).Contains("Game Over");
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeInTenthFrameAndThenRolledAStrike_WhenRollingAStrike_ThenTenthFrameScoreIsThirty()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        testFacade.RollStrike();
+
+        // Then
+        await testFacade.AssertFrameScore(10, 30);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledThreeStrikesInTenthFrame_WhenRollingSevenPins_ThenGameOverExceptionIsThrown()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+        testFacade.RollStrike();
+
+        // When
+        var exception = Assert.Throws<Exception>(() => testFacade.Roll(7));
+
+        // Then
+        await Assert.That(exception.Message).Contains("Game Over");
+    }
+
+    [Test]
+    public async Task GivenPlayerHasABadDay_WhenRollingGutterGame_ThenTotalScoreIsZero()
+    {
+        // Given
+        testFacade.StartNewGame();
+
+        // When
+        var gutterGame = Enumerable.Repeat(0, 20).ToArray();
+        testFacade.RollMany(gutterGame);
+
+        // Then
+        await testFacade.AssertTotalScore(0);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasANiceDay_WhenRollingPerfectGame_ThenTotalScoreIsThreeHundred()
+    {
+        // Given
+        testFacade.StartNewGame();
+
+        // When
+        var perfectGame = Enumerable.Repeat(10, 12).ToArray(); // 10 strikes in a row
+        testFacade.RollMany(perfectGame);
+
+        // Then
+        await testFacade.AssertTotalScore(300);
+    }
+
+    [Test]
+    public async Task GivenANewBowlingGame_WhenPlayingWholeExampleGame_ThenTotalScoreIsRight()
+    {
+        // Given
+        testFacade.StartNewGame();
+
+        // When
+        testFacade.RollMany(1, 4, 4, 5, 6, 4, 5, 5, 10, 0, 1, 7, 3, 6, 4, 10, 2, 8, 6);
+
+        // Then
+        await testFacade.AssertTotalScore(133);
+    }
+
+    [Test]
+    public async Task GivenPlayerRolledSixPinsOnFirstRollInFirstFrame_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.Roll(6);
+
+        // When
+        var exception = Assert.Throws<Exception>(() => testFacade.Roll(6));
+
+        // Then
+        await Assert.That(exception.Message).Contains("pins");
     }
 
 }

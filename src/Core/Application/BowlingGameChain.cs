@@ -120,6 +120,10 @@ internal class LastFrameRollHandler : RollHandler, IBowlingFrame
         {
             FirstRoll = pins;
         }
+        else if (FirstRoll.Value + pins > 10)
+        {
+            throw new Exception($"It is not possible to roll {pins} pins, when there are only {10 - FirstRoll.Value} pins remaining");
+        }
         else
         {
             SecondRoll = pins;
@@ -168,6 +172,10 @@ internal class DefaultRollHandler : RollHandler, IBowlingFrame
         if (FirstRoll is null)
         {
             FirstRoll = pins;
+        }
+        else if (FirstRoll.Value + pins > 10)
+        {
+            throw new Exception($"It is not possible to roll {pins} pins, when there are only {10 - FirstRoll.Value} pins remaining");
         }
         else
         {
