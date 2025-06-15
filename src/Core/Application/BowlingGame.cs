@@ -45,9 +45,23 @@ public class BowlingGame : IBowlingGame
     private void EndFrame()
     {
         var currentFrameIndex = Array.IndexOf(frames, currentFrame);
-        if (currentFrameIndex < 0 || currentFrameIndex >= frames.Length - 1)
+        if (currentFrameIndex is 9) // Last frame
         {
-            currentFrame = null;
+            if(currentFrame.IsStrike || currentFrame.IsSpare)
+            {
+                // Allow for bonus rolls in the last frame
+                var supportFrame = new Frame();
+                currentFrame.TrailingFrame = supportFrame;
+                currentFrame = supportFrame;
+            }
+            else
+            {
+                currentFrame = null;
+            }
+        }
+        else if (currentFrameIndex < 0)
+        {
+            // support frame
         }
         else
         {
@@ -58,6 +72,8 @@ public class BowlingGame : IBowlingGame
             currentFrame = nextFrame;
         }
     }
+
+
 
     internal record Frame : IBowlingFrame
     {

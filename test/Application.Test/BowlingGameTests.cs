@@ -38,8 +38,10 @@ namespace Application.Test;
 // GivenPlayerHasPlayedNineFramesAndRolledTwoPinsOnFirstRollInTenthFrame_WhenRollingFourPins_ThenTenthFrameScoreIsSix
 // GIvenPlayerHasPlayedNineFramesAndRolledTwoPinsOnFirstRollAndFourPinsInSecondRollInTenthFrame_WhenRollingSixPins_ThenGameOverExceptionIsThrown
 
-
-
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrame_WhenRollingFourPins_ThenTenthFrameScoreIsFourteen
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPins_WhenRollingFourPins_ThenTenthFrameScoreIsEighteen
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPins_WhenRollingSixPins_ThenTenthFrameScoreIsTwenty
+// GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPinsAndFourPinsAgain_WhenRollingSixPins_ThenGameOverExceptionIsThrown
 
 
 // GivenPlayerHasPlayedTenFrames_WhenRollingSixPins_ThenInvalidPinsExceptionIsThrown
@@ -454,6 +456,70 @@ internal class BowlingGameTests
         testFacade.StartNewGame();
         testFacade.FinishFrames(9);
         testFacade.Roll(2);
+        testFacade.Roll(4);
+
+        // When
+        var exception = Assert.Throws<Exception>(() => testFacade.Roll(6));
+
+        // Then
+        await Assert.That(exception.Message).Contains("Game Over");
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrame_WhenRollingFourPins_ThenTenthFrameScoreIsFourteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertFrameScore(10, 14);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPins_WhenRollingFourPins_ThenTenthFrameScoreIsEighteen()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.Roll(4);
+
+        // When
+        testFacade.Roll(4);
+
+        // Then
+        await testFacade.AssertFrameScore(10, 18);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPins_WhenRollingSixPins_ThenTenthFrameScoreIsTwenty()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.Roll(4);
+
+        // When
+        testFacade.Roll(6);
+
+        // Then
+        await testFacade.AssertFrameScore(10, 20);
+    }
+
+    [Test]
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledAStrikeOnFirstRollInTenthFrameAndThenRolledFourPinsAndFourPinsAgain_WhenRollingSixPins_ThenGameOverExceptionIsThrown()
+    {
+        // Given
+        testFacade.StartNewGame();
+        testFacade.FinishFrames(9);
+        testFacade.RollStrike();
+        testFacade.Roll(4);
         testFacade.Roll(4);
 
         // When
