@@ -3,7 +3,7 @@ namespace Application;
 
 public class BowlingGame : IBowlingGame
 {
-    private int currentFrameIndex = 0;
+    private Frame? currentFrame;
     public IReadOnlyCollection<IBowlingFrame> Frames => frames;
 
     public int Score => frames.Sum(frame => frame.Score ?? 0);
@@ -14,24 +14,48 @@ public class BowlingGame : IBowlingGame
         new Frame(), new Frame(), new Frame(), new Frame(), new Frame()
     ];
 
+    public BowlingGame()
+    {
+        currentFrame = frames[0];
+    }
+
     public void Roll(int pins)
     {
-        var currentFrame = frames[currentFrameIndex];
+        if (currentFrame is null)
+        {
+            throw new Exception("Game Over");
+        }
+
         if (currentFrame.FirstRoll is null)
         {
             currentFrame.FirstRoll = pins;
             if (pins == 10) // Strike
             {
-                currentFrameIndex++;
-                currentFrame.TrailingFrame = frames[currentFrameIndex];
+                EndFrame();
             }
 
         }
         else if (currentFrame.SecondRoll is null)
         {
             currentFrame.SecondRoll = pins;
-            currentFrameIndex++;
-            currentFrame.TrailingFrame = frames[currentFrameIndex];
+            EndFrame();
+        }
+    }
+
+    private void EndFrame()
+    {
+        var currentFrameIndex = Array.IndexOf(frames, currentFrame);
+        if (currentFrameIndex < 0 || currentFrameIndex >= frames.Length - 1)
+        {
+            currentFrame = null;
+        }
+        else
+        {
+            // Set the next frame as the current frame
+            var nextFrameIndex = currentFrameIndex + 1;
+            var nextFrame = frames[nextFrameIndex];
+            currentFrame.TrailingFrame = nextFrame;
+            currentFrame = nextFrame;
         }
     }
 
@@ -41,7 +65,6 @@ public class BowlingGame : IBowlingGame
         public bool IsSpare => FirstRoll.HasValue && SecondRoll.HasValue && (FirstRoll + SecondRoll == 10);
         public int? FirstRoll { get; set; }
         public int? SecondRoll { get; set; }
-
         public int? Score
         {
             get

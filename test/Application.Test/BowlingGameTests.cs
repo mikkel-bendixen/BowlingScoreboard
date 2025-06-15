@@ -448,7 +448,7 @@ internal class BowlingGameTests
     }
 
     [Test]
-    public async Task GIvenPlayerHasPlayedNineFramesAndRolledTwoPinsOnFirstRollAndFourPinsInSecondRollInTenthFrame_WhenRollingSixPins_ThenGameOverExceptionIsThrown()
+    public async Task GivenPlayerHasPlayedNineFramesAndRolledTwoPinsOnFirstRollAndFourPinsInSecondRollInTenthFrame_WhenRollingSixPins_ThenGameOverExceptionIsThrown()
     {
         // Given
         testFacade.StartNewGame();
@@ -460,7 +460,7 @@ internal class BowlingGameTests
         var exception = Assert.Throws<Exception>(() => testFacade.Roll(6));
 
         // Then
-        await Assert.That(exception.Message).Contains("Game over");
+        await Assert.That(exception.Message).Contains("Game Over");
     }
 
 }
